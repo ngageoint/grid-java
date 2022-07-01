@@ -272,6 +272,82 @@ public class Bounds {
 	}
 
 	/**
+	 * Get the western longitude
+	 * 
+	 * @return western longitude
+	 */
+	public double getWest() {
+		return getMinLongitude();
+	}
+
+	/**
+	 * Set the western longitude
+	 * 
+	 * @param west
+	 *            western longitude
+	 */
+	public void setWest(double west) {
+		setMinLongitude(west);
+	}
+
+	/**
+	 * Get the southern latitude
+	 * 
+	 * @return southern latitude
+	 */
+	public double getSouth() {
+		return getMinLatitude();
+	}
+
+	/**
+	 * Set the southern latitude
+	 * 
+	 * @param south
+	 *            southern latitude
+	 */
+	public void setSouth(double south) {
+		setMinLatitude(south);
+	}
+
+	/**
+	 * Get the eastern longitude
+	 * 
+	 * @return eastern longitude
+	 */
+	public double getEast() {
+		return getMaxLongitude();
+	}
+
+	/**
+	 * Set the eastern longitude
+	 * 
+	 * @param east
+	 *            eastern longitude
+	 */
+	public void setEast(double east) {
+		setMaxLongitude(east);
+	}
+
+	/**
+	 * Get the northern latitude
+	 * 
+	 * @return northern latitude
+	 */
+	public double getNorth() {
+		return getMaxLatitude();
+	}
+
+	/**
+	 * Set the northern latitude
+	 * 
+	 * @param north
+	 *            northern latitude
+	 */
+	public void setNorth(double north) {
+		setMaxLatitude(north);
+	}
+
+	/**
 	 * Get the unit
 	 * 
 	 * @return unit
