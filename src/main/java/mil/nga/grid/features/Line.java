@@ -60,7 +60,7 @@ public class Line {
 	 *            line to copy
 	 */
 	public Line(Line line) {
-		this(line.getPoint1(), line.getPoint2());
+		this(line.getPoint1().copy(), line.getPoint2().copy());
 	}
 
 	/**
