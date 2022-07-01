@@ -19,11 +19,11 @@ View the latest [Javadoc](http://ngageoint.github.io/grid-java/docs/api/)
 
 #### Military Grid Reference System ####
 
-[MGRS](http://ngageoint.github.io/mgrs-java/) is a Java library providing Military Grid Reference System functionality, a geocoordinate standard used by NATO militaries for locating points on Earth.
+[MGRS](https://github.com/ngageoint/mgrs-java) is a Java library providing Military Grid Reference System functionality, a geocoordinate standard used by NATO militaries for locating points on Earth.
 
 #### Global Area Reference System ####
 
-[GARS](http://ngageoint.github.io/gars-java/) is a Java library providing Global Area Reference System functionality, a standardized geospatial reference system for areas.
+[GARS](https://github.com/ngageoint/gars-java) is a Java library providing Global Area Reference System functionality, a standardized geospatial reference system for areas.
 
 ### Installation ###
 
