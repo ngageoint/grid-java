@@ -31,6 +31,17 @@ public class Line {
 	}
 
 	/**
+	 * Copy a line
+	 * 
+	 * @param line
+	 *            line to copy
+	 * @return line
+	 */
+	public static Line line(Line line) {
+		return new Line(line);
+	}
+
+	/**
 	 * Constructor
 	 * 
 	 * @param point1

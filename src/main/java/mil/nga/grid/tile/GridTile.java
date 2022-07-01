@@ -47,8 +47,7 @@ public class GridTile {
 	 *            zoom level
 	 * @return tile
 	 */
-	public static GridTile create(int width, int height, int x, int y,
-			int zoom) {
+	public static GridTile tile(int width, int height, int x, int y, int zoom) {
 		return new GridTile(width, height, x, y, zoom);
 	}
 
@@ -63,7 +62,7 @@ public class GridTile {
 	 *            tile bounds
 	 * @return tile
 	 */
-	public static GridTile create(int width, int height, Bounds bounds) {
+	public static GridTile tile(int width, int height, Bounds bounds) {
 		return new GridTile(width, height, bounds);
 	}
 

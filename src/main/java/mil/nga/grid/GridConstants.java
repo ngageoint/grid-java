@@ -47,4 +47,24 @@ public class GridConstants {
 	 */
 	public static final int MAX_MAP_ZOOM_LEVEL = 21;
 
+	/**
+	 * North single character as a string
+	 */
+	public static final String NORTH_CHAR = "N";
+
+	/**
+	 * South single character as a string
+	 */
+	public static final String SOUTH_CHAR = "S";
+
+	/**
+	 * West single character as a string
+	 */
+	public static final String WEST_CHAR = "W";
+
+	/**
+	 * East single character as a string
+	 */
+	public static final String EAST_CHAR = "E";
+
 }

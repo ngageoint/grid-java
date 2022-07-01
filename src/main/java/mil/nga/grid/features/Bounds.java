@@ -113,6 +113,17 @@ public class Bounds {
 	}
 
 	/**
+	 * Copy bounds
+	 * 
+	 * @param bounds
+	 *            bounds to copy
+	 * @return bounds
+	 */
+	public static Bounds bounds(Bounds bounds) {
+		return new Bounds(bounds);
+	}
+
+	/**
 	 * Constructor
 	 * 
 	 * @param minLongitude
@@ -432,7 +443,7 @@ public class Bounds {
 	 * @return southwest coordinate
 	 */
 	public Point getSouthwest() {
-		return Point.create(minLongitude, minLatitude, unit);
+		return Point.point(minLongitude, minLatitude, unit);
 	}
 
 	/**
@@ -441,7 +452,7 @@ public class Bounds {
 	 * @return northwest coordinate
 	 */
 	public Point getNorthwest() {
-		return Point.create(minLongitude, maxLatitude, unit);
+		return Point.point(minLongitude, maxLatitude, unit);
 	}
 
 	/**
@@ -450,7 +461,7 @@ public class Bounds {
 	 * @return southeast coordinate
 	 */
 	public Point getSoutheast() {
-		return Point.create(maxLongitude, minLatitude, unit);
+		return Point.point(maxLongitude, minLatitude, unit);
 	}
 
 	/**
@@ -459,7 +470,7 @@ public class Bounds {
 	 * @return northeast coordinate
 	 */
 	public Point getNortheast() {
-		return Point.create(maxLongitude, maxLatitude, unit);
+		return Point.point(maxLongitude, maxLatitude, unit);
 	}
 
 	/**

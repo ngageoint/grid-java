@@ -35,7 +35,7 @@ public class Point {
 	 *            latitude
 	 * @return point
 	 */
-	public static Point create(double longitude, double latitude) {
+	public static Point point(double longitude, double latitude) {
 		return degrees(longitude, latitude);
 	}
 
@@ -50,7 +50,7 @@ public class Point {
 	 *            unit
 	 * @return point
 	 */
-	public static Point create(double longitude, double latitude, Unit unit) {
+	public static Point point(double longitude, double latitude, Unit unit) {
 		return new Point(longitude, latitude, unit);
 	}
 
@@ -64,7 +64,7 @@ public class Point {
 	 * @return point in degrees
 	 */
 	public static Point degrees(double longitude, double latitude) {
-		return create(longitude, latitude, Unit.DEGREE);
+		return point(longitude, latitude, Unit.DEGREE);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class Point {
 	 * @return point in meters
 	 */
 	public static Point meters(double longitude, double latitude) {
-		return create(longitude, latitude, Unit.METER);
+		return point(longitude, latitude, Unit.METER);
 	}
 
 	/**
@@ -137,6 +137,17 @@ public class Point {
 	 */
 	public static Point metersToDegrees(double longitude, double latitude) {
 		return toUnit(Unit.METER, longitude, latitude, Unit.DEGREE);
+	}
+
+	/**
+	 * Copy a point
+	 * 
+	 * @param point
+	 *            point to copy
+	 * @return line
+	 */
+	public static Point point(Point point) {
+		return new Point(point);
 	}
 
 	/**

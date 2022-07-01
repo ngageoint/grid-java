@@ -164,7 +164,7 @@ public class GridUtils {
 			Unit toUnit) {
 		Point point = null;
 		if (fromUnit == toUnit) {
-			point = Point.create(longitude, latitude, toUnit);
+			point = Point.point(longitude, latitude, toUnit);
 		} else {
 			point = toUnit(longitude, latitude, toUnit);
 		}
