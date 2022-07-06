@@ -1,6 +1,6 @@
 package mil.nga.grid;
 
-import mil.nga.grid.color.Color;
+import mil.nga.color.Color;
 
 /**
  * Base Grid

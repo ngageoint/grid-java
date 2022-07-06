@@ -46,3 +46,4 @@ Build this repository using Eclipse and/or Maven:
 ### Remote Dependencies ###
 
 * [Simple Features](https://github.com/ngageoint/simple-features-java) (The MIT License (MIT)) - Simple Features Lib
+* [Color](https://github.com/ngageoint/color-java) (The MIT License (MIT)) - Color Lib

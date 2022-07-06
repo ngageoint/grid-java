@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.TreeMap;
 
-import mil.nga.grid.color.Color;
+import mil.nga.color.Color;
 import mil.nga.grid.property.GridProperties;
 import mil.nga.grid.property.PropertyConstants;
 
