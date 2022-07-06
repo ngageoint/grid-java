@@ -1,21 +1,21 @@
 package mil.nga.grid.features;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import mil.nga.grid.GridUtils;
+
 /**
  * Line between two points
  * 
  * @author osbornb
  */
-public class Line {
+public class Line extends mil.nga.sf.Line {
 
 	/**
-	 * Point 1
+	 * Serial Version UID
 	 */
-	private Point point1;
-
-	/**
-	 * Point 2
-	 */
-	private Point point2;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create a line
@@ -60,7 +60,7 @@ public class Line {
 	 *            line to copy
 	 */
 	public Line(Line line) {
-		this(line.getPoint1().copy(), line.getPoint2().copy());
+		super(line);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class Line {
 	 * @return first point
 	 */
 	public Point getPoint1() {
-		return point1;
+		return (Point) startPoint();
 	}
 
 	/**
@@ -79,8 +79,7 @@ public class Line {
 	 *            first point
 	 */
 	public void setPoint1(Point point1) {
-		this.point1 = point1;
-		validateUnits();
+		setPoints(point1, getPoint2());
 	}
 
 	/**
@@ -89,7 +88,7 @@ public class Line {
 	 * @return second point
 	 */
 	public Point getPoint2() {
-		return point2;
+		return (Point) endPoint();
 	}
 
 	/**
@@ -99,8 +98,7 @@ public class Line {
 	 *            second point
 	 */
 	public void setPoint2(Point point2) {
-		this.point2 = point2;
-		validateUnits();
+		setPoints(getPoint1(), point2);
 	}
 
 	/**
@@ -112,8 +110,10 @@ public class Line {
 	 *            second point
 	 */
 	public void setPoints(Point point1, Point point2) {
-		this.point1 = point1;
-		this.point2 = point2;
+		List<mil.nga.sf.Point> points = new ArrayList<>();
+		points.add(point1);
+		points.add(point2);
+		setPoints(points);
 		validateUnits();
 	}
 
@@ -123,7 +123,7 @@ public class Line {
 	 * @return unit
 	 */
 	public Unit getUnit() {
-		return point1.getUnit();
+		return getPoint1().getUnit();
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class Line {
 	 * @return true if in the unit
 	 */
 	public boolean isUnit(Unit unit) {
-		return point1.isUnit(unit);
+		return getPoint1().isUnit(unit);
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class Line {
 	 * @return true if degrees
 	 */
 	public boolean isDegrees() {
-		return point1.isDegrees();
+		return getPoint1().isDegrees();
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class Line {
 	 * @return true if meters
 	 */
 	public boolean isMeters() {
-		return point1.isMeters();
+		return getPoint1().isMeters();
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class Line {
 			line = this;
 		} else {
 			line = copy();
-			line.setPoints(point1.toUnit(unit), point2.toUnit(unit));
+			line.setPoints(getPoint1().toUnit(unit), getPoint2().toUnit(unit));
 		}
 		return line;
 	}
@@ -192,6 +192,17 @@ public class Line {
 	}
 
 	/**
+	 * Get the intersection between this line and the provided line
+	 * 
+	 * @param line
+	 *            line
+	 * @return intersection
+	 */
+	public Point intersection(Line line) {
+		return GridUtils.intersection(this, line);
+	}
+
+	/**
 	 * Copy the line
 	 * 
 	 * @return line copy
@@ -204,10 +215,11 @@ public class Line {
 	 * Validate units are the same
 	 */
 	private void validateUnits() {
-		if (!point1.isUnit(point2.getUnit())) {
+		if (!getPoint1().isUnit(getPoint2().getUnit())) {
 			throw new IllegalArgumentException(
-					"Points are in different units. point1: " + point1.getUnit()
-							+ ", point2: " + point2.getUnit());
+					"Points are in different units. point1: "
+							+ getPoint1().getUnit() + ", point2: "
+							+ getPoint2().getUnit());
 		}
 	}
 

@@ -7,33 +7,19 @@ import mil.nga.grid.GridUtils;
 import mil.nga.grid.tile.GridTile;
 import mil.nga.grid.tile.Pixel;
 import mil.nga.grid.tile.PixelRange;
+import mil.nga.sf.GeometryEnvelope;
 
 /**
  * Grid Bounds
  * 
  * @author osbornb
  */
-public class Bounds {
+public class Bounds extends GeometryEnvelope {
 
 	/**
-	 * Min longitude
+	 * Serial Version UID
 	 */
-	private double minLongitude;
-
-	/**
-	 * Max longitude
-	 */
-	private double maxLongitude;
-
-	/**
-	 * Min latitude
-	 */
-	private double minLatitude;
-
-	/**
-	 * Max latitude
-	 */
-	private double maxLatitude;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Unit
@@ -124,6 +110,19 @@ public class Bounds {
 	}
 
 	/**
+	 * Create bounds
+	 * 
+	 * @param envelope
+	 *            geometry envelope
+	 * @param unit
+	 *            unit
+	 * @return bounds
+	 */
+	public static Bounds bounds(GeometryEnvelope envelope, Unit unit) {
+		return new Bounds(envelope, unit);
+	}
+
+	/**
 	 * Constructor
 	 * 
 	 * @param minLongitude
@@ -156,10 +155,7 @@ public class Bounds {
 	 */
 	public Bounds(double minLongitude, double minLatitude, double maxLongitude,
 			double maxLatitude, Unit unit) {
-		this.minLongitude = minLongitude;
-		this.minLatitude = minLatitude;
-		this.maxLongitude = maxLongitude;
-		this.maxLatitude = maxLatitude;
+		super(minLongitude, minLatitude, maxLongitude, maxLatitude);
 		this.unit = unit;
 	}
 
@@ -190,9 +186,20 @@ public class Bounds {
 	 *            bounds to copy
 	 */
 	public Bounds(Bounds bounds) {
-		this(bounds.getMinLongitude(), bounds.getMinLatitude(),
-				bounds.getMaxLongitude(), bounds.getMaxLatitude(),
-				bounds.getUnit());
+		this(bounds, bounds.unit);
+	}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param envelope
+	 *            geometry envelope
+	 * @param unit
+	 *            unit
+	 */
+	public Bounds(GeometryEnvelope envelope, Unit unit) {
+		super(envelope);
+		this.unit = unit;
 	}
 
 	/**
@@ -201,7 +208,7 @@ public class Bounds {
 	 * @return min longitude
 	 */
 	public double getMinLongitude() {
-		return minLongitude;
+		return getMinX();
 	}
 
 	/**
@@ -211,26 +218,7 @@ public class Bounds {
 	 *            min longitude
 	 */
 	public void setMinLongitude(double minLongitude) {
-		this.minLongitude = minLongitude;
-	}
-
-	/**
-	 * Get the max longitude
-	 * 
-	 * @return max longitude
-	 */
-	public double getMaxLongitude() {
-		return maxLongitude;
-	}
-
-	/**
-	 * Set the max longitude
-	 * 
-	 * @param maxLongitude
-	 *            max longitude
-	 */
-	public void setMaxLongitude(double maxLongitude) {
-		this.maxLongitude = maxLongitude;
+		setMinX(minLongitude);
 	}
 
 	/**
@@ -239,7 +227,7 @@ public class Bounds {
 	 * @return min latitude
 	 */
 	public double getMinLatitude() {
-		return minLatitude;
+		return getMinY();
 	}
 
 	/**
@@ -249,7 +237,26 @@ public class Bounds {
 	 *            min latitude
 	 */
 	public void setMinLatitude(double minLatitude) {
-		this.minLatitude = minLatitude;
+		setMinY(minLatitude);
+	}
+
+	/**
+	 * Get the max longitude
+	 * 
+	 * @return max longitude
+	 */
+	public double getMaxLongitude() {
+		return getMaxX();
+	}
+
+	/**
+	 * Set the max longitude
+	 * 
+	 * @param maxLongitude
+	 *            max longitude
+	 */
+	public void setMaxLongitude(double maxLongitude) {
+		setMaxX(maxLongitude);
 	}
 
 	/**
@@ -258,7 +265,7 @@ public class Bounds {
 	 * @return max latitude
 	 */
 	public double getMaxLatitude() {
-		return maxLatitude;
+		return getMaxY();
 	}
 
 	/**
@@ -268,7 +275,7 @@ public class Bounds {
 	 *            max latitude
 	 */
 	public void setMaxLatitude(double maxLatitude) {
-		this.maxLatitude = maxLatitude;
+		setMaxY(maxLatitude);
 	}
 
 	/**
@@ -438,7 +445,7 @@ public class Bounds {
 	 * @return center longitude
 	 */
 	public double getCenterLongitude() {
-		return (getWidth() / 2.0) + minLongitude;
+		return (getWidth() / 2.0) + getMinLongitude();
 	}
 
 	/**
@@ -463,12 +470,14 @@ public class Bounds {
 		Point southPoint = null;
 		switch (unit) {
 		case DEGREE:
-			northPoint = Point.degreesToMeters(centerLongitude, maxLatitude);
-			southPoint = Point.degreesToMeters(centerLongitude, minLatitude);
+			northPoint = Point.degreesToMeters(centerLongitude,
+					getMaxLatitude());
+			southPoint = Point.degreesToMeters(centerLongitude,
+					getMinLatitude());
 			break;
 		case METER:
-			northPoint = Point.meters(centerLongitude, maxLatitude);
-			southPoint = Point.meters(centerLongitude, minLatitude);
+			northPoint = Point.meters(centerLongitude, getMaxLatitude());
+			southPoint = Point.meters(centerLongitude, getMinLatitude());
 			break;
 		default:
 			throw new IllegalArgumentException("Unsupported unit: " + unit);
@@ -492,7 +501,7 @@ public class Bounds {
 	 * @return width
 	 */
 	public double getWidth() {
-		return maxLongitude - minLongitude;
+		return getXRange();
 	}
 
 	/**
@@ -501,16 +510,7 @@ public class Bounds {
 	 * @return height
 	 */
 	public double getHeight() {
-		return maxLatitude - minLatitude;
-	}
-
-	/**
-	 * Determine if the bounds are empty
-	 * 
-	 * @return true if empty
-	 */
-	public boolean isEmpty() {
-		return getWidth() <= 0.0 || getHeight() <= 0.0;
+		return getYRange();
 	}
 
 	/**
@@ -519,7 +519,7 @@ public class Bounds {
 	 * @return southwest coordinate
 	 */
 	public Point getSouthwest() {
-		return Point.point(minLongitude, minLatitude, unit);
+		return Point.point(getMinLongitude(), getMinLatitude(), unit);
 	}
 
 	/**
@@ -528,7 +528,7 @@ public class Bounds {
 	 * @return northwest coordinate
 	 */
 	public Point getNorthwest() {
-		return Point.point(minLongitude, maxLatitude, unit);
+		return Point.point(getMinLongitude(), getMaxLatitude(), unit);
 	}
 
 	/**
@@ -537,7 +537,7 @@ public class Bounds {
 	 * @return southeast coordinate
 	 */
 	public Point getSoutheast() {
-		return Point.point(maxLongitude, minLatitude, unit);
+		return Point.point(getMaxLongitude(), getMinLatitude(), unit);
 	}
 
 	/**
@@ -546,31 +546,7 @@ public class Bounds {
 	 * @return northeast coordinate
 	 */
 	public Point getNortheast() {
-		return Point.point(maxLongitude, maxLatitude, unit);
-	}
-
-	/**
-	 * Create a new bounds as the union between this bounds and the provided
-	 * 
-	 * @param bounds
-	 *            bounds
-	 * @return union bounds
-	 */
-	public Bounds union(Bounds bounds) {
-
-		bounds = bounds.toUnit(unit);
-
-		double minLongitude = Math.min(getMinLongitude(),
-				bounds.getMinLongitude());
-		double minLatitude = Math.min(getMinLatitude(),
-				bounds.getMinLatitude());
-		double maxLongitude = Math.max(getMaxLongitude(),
-				bounds.getMaxLongitude());
-		double maxLatitude = Math.max(getMaxLatitude(),
-				bounds.getMaxLatitude());
-
-		return new Bounds(minLongitude, minLatitude, maxLongitude, maxLatitude,
-				unit);
+		return Point.point(getMaxLongitude(), getMaxLatitude(), unit);
 	}
 
 	/**
@@ -583,34 +559,34 @@ public class Bounds {
 	 */
 	public Bounds overlap(Bounds bounds) {
 
-		bounds = bounds.toUnit(unit);
+		Bounds overlap = null;
 
-		double minLongitude = Math.max(getMinLongitude(),
-				bounds.getMinLongitude());
-		double minLatitude = Math.max(getMinLatitude(),
-				bounds.getMinLatitude());
-		double maxLongitude = Math.min(getMaxLongitude(),
-				bounds.getMaxLongitude());
-		double maxLatitude = Math.min(getMaxLatitude(),
-				bounds.getMaxLatitude());
+		GeometryEnvelope overlapEnvelope = super.overlap(bounds.toUnit(unit),
+				true);
+		if (overlapEnvelope != null) {
+			overlap = new Bounds(overlapEnvelope, unit);
+		}
 
-		return new Bounds(minLongitude, minLatitude, maxLongitude, maxLatitude,
-				unit);
+		return overlap;
 	}
 
 	/**
-	 * Determine if contains the point
-	 *
-	 * @param point
-	 *            point
-	 * @return true if contains
+	 * Create a new bounds as the union between this bounds and the provided
+	 * 
+	 * @param bounds
+	 *            bounds
+	 * @return union bounds
 	 */
-	public boolean contains(Point point) {
-		point = point.toUnit(unit);
-		double longitude = point.getLongitude();
-		double latitude = point.getLatitude();
-		return longitude >= getMinLongitude() && longitude <= getMaxLongitude()
-				&& latitude >= getMinLatitude() && latitude <= getMaxLatitude();
+	public Bounds union(Bounds bounds) {
+
+		Bounds union = null;
+
+		GeometryEnvelope unionEnvelope = super.union(bounds.toUnit(unit));
+		if (unionEnvelope != null) {
+			union = new Bounds(unionEnvelope, unit);
+		}
+
+		return union;
 	}
 
 	/**
@@ -733,6 +709,34 @@ public class Bounds {
 	 */
 	public Bounds copy() {
 		return new Bounds(this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Bounds other = (Bounds) obj;
+		if (unit != other.unit)
+			return false;
+		return true;
 	}
 
 }

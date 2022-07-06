@@ -5,6 +5,7 @@ import mil.nga.grid.features.Line;
 import mil.nga.grid.features.Point;
 import mil.nga.grid.features.Unit;
 import mil.nga.grid.tile.Pixel;
+import mil.nga.sf.util.GeometryUtils;
 
 /**
  * Grid utilities
@@ -291,7 +292,7 @@ public class GridUtils {
 	 * @return intersection point or null if no intersection
 	 */
 	public static Point intersection(Line line1, Line line2) {
-		return intsersection(line1.getPoint1(), line1.getPoint2(),
+		return intersection(line1.getPoint1(), line1.getPoint2(),
 				line2.getPoint1(), line2.getPoint2());
 	}
 
@@ -308,34 +309,18 @@ public class GridUtils {
 	 *            second point of the second line
 	 * @return intersection point or null if no intersection
 	 */
-	public static Point intsersection(Point line1Point1, Point line1Point2,
+	public static Point intersection(Point line1Point1, Point line1Point2,
 			Point line2Point1, Point line2Point2) {
-
-		Unit unit = line1Point1.getUnit();
-
-		line1Point1 = line1Point1.toMeters();
-		line1Point2 = line1Point2.toMeters();
-		line2Point1 = line2Point1.toMeters();
-		line2Point2 = line2Point2.toMeters();
 
 		Point intersection = null;
 
-		double a1 = line1Point2.getLatitude() - line1Point1.getLatitude();
-		double b1 = line1Point1.getLongitude() - line1Point2.getLongitude();
-		double c1 = a1 * (line1Point1.getLongitude())
-				+ b1 * (line1Point1.getLatitude());
+		mil.nga.sf.Point point = GeometryUtils.intersection(
+				line1Point1.toMeters(), line1Point2.toMeters(),
+				line2Point1.toMeters(), line2Point2.toMeters());
 
-		double a2 = line2Point2.getLatitude() - line2Point1.getLatitude();
-		double b2 = line2Point1.getLongitude() - line2Point2.getLongitude();
-		double c2 = a2 * (line2Point1.getLongitude())
-				+ b2 * (line2Point1.getLatitude());
-
-		double determinant = a1 * b2 - a2 * b1;
-
-		if (determinant != 0) {
-			double x = (b2 * c1 - b1 * c2) / determinant;
-			double y = (a1 * c2 - a2 * c1) / determinant;
-			intersection = Point.meters(x, y).toUnit(unit);
+		if (point != null) {
+			intersection = Point.point(point, Unit.METER)
+					.toUnit(line1Point1.getUnit());
 		}
 
 		return intersection;

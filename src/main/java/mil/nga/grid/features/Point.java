@@ -9,17 +9,12 @@ import mil.nga.grid.tile.Pixel;
  * 
  * @author osbornb
  */
-public class Point {
+public class Point extends mil.nga.sf.Point {
 
 	/**
-	 * Latitude
+	 * Serial Version UID
 	 */
-	private double latitude;
-
-	/**
-	 * Longitude
-	 */
-	private double longitude;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Unit
@@ -144,10 +139,23 @@ public class Point {
 	 * 
 	 * @param point
 	 *            point to copy
-	 * @return line
+	 * @return point
 	 */
 	public static Point point(Point point) {
 		return new Point(point);
+	}
+
+	/**
+	 * Create a point
+	 * 
+	 * @param point
+	 *            point to copy
+	 * @param unit
+	 *            unit
+	 * @return point
+	 */
+	public static Point point(mil.nga.sf.Point point, Unit unit) {
+		return new Point(point, unit);
 	}
 
 	/**
@@ -173,8 +181,7 @@ public class Point {
 	 *            unit
 	 */
 	public Point(double longitude, double latitude, Unit unit) {
-		this.longitude = longitude;
-		this.latitude = latitude;
+		super(longitude, latitude);
 		this.unit = unit;
 	}
 
@@ -185,26 +192,20 @@ public class Point {
 	 *            point to copy
 	 */
 	public Point(Point point) {
-		this(point.getLongitude(), point.getLatitude(), point.getUnit());
+		this(point, point.unit);
 	}
 
 	/**
-	 * Get the latitude
+	 * Constructor
 	 * 
-	 * @return latitude
+	 * @param point
+	 *            point to copy
+	 * @param unit
+	 *            unit
 	 */
-	public double getLatitude() {
-		return latitude;
-	}
-
-	/**
-	 * Set the latitude
-	 * 
-	 * @param latitude
-	 *            latitude
-	 */
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
+	public Point(mil.nga.sf.Point point, Unit unit) {
+		super(point);
+		this.unit = unit;
 	}
 
 	/**
@@ -213,7 +214,7 @@ public class Point {
 	 * @return longitude
 	 */
 	public double getLongitude() {
-		return longitude;
+		return getX();
 	}
 
 	/**
@@ -223,7 +224,26 @@ public class Point {
 	 *            longitude
 	 */
 	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+		setX(longitude);
+	}
+
+	/**
+	 * Get the latitude
+	 * 
+	 * @return latitude
+	 */
+	public double getLatitude() {
+		return getY();
+	}
+
+	/**
+	 * Set the latitude
+	 * 
+	 * @param latitude
+	 *            latitude
+	 */
+	public void setLatitude(double latitude) {
+		setY(latitude);
 	}
 
 	/**
@@ -286,7 +306,8 @@ public class Point {
 		if (isUnit(unit)) {
 			point = this;
 		} else {
-			point = GridUtils.toUnit(this.unit, longitude, latitude, unit);
+			point = GridUtils.toUnit(this.unit, getLongitude(), getLatitude(),
+					unit);
 		}
 		return point;
 	}
@@ -342,6 +363,34 @@ public class Point {
 	 */
 	public Point copy() {
 		return new Point(this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Point other = (Point) obj;
+		if (unit != other.unit)
+			return false;
+		return true;
 	}
 
 }
