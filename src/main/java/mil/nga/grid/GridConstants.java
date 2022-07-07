@@ -28,11 +28,6 @@ public class GridConstants {
 	public static final double MAX_LAT = 90.0;
 
 	/**
-	 * Half the world distance in either direction
-	 */
-	public static final double WEB_MERCATOR_HALF_WORLD_WIDTH = 20037508.342789244;
-
-	/**
 	 * Omitted band letter 'I'
 	 */
 	public static final char BAND_LETTER_OMIT_I = 'I';

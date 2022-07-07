@@ -100,13 +100,13 @@ public class GridUtils {
 		int tilesPerSide = tilesPerSide(zoom);
 		double tileSize = tileSize(tilesPerSide);
 
-		double minLon = (-1 * GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH)
+		double minLon = (-1 * GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH)
 				+ (x * tileSize);
-		double minLat = GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH
+		double minLat = GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH
 				- ((y + 1) * tileSize);
-		double maxLon = (-1 * GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH)
+		double maxLon = (-1 * GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH)
 				+ ((x + 1) * tileSize);
-		double maxLat = GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH
+		double maxLat = GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH
 				- (y * tileSize);
 
 		return Bounds.meters(minLon, minLat, maxLon, maxLat);
@@ -131,7 +131,7 @@ public class GridUtils {
 	 * @return tile size
 	 */
 	public static double tileSize(int tilesPerSide) {
-		return (2 * GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH) / tilesPerSide;
+		return (2 * GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH) / tilesPerSide;
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class GridUtils {
 	public static double getZoomLevel(Bounds bounds) {
 		bounds = bounds.toMeters();
 		double tileSize = Math.min(bounds.getWidth(), bounds.getHeight());
-		double tilesPerSide = 2 * GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH
+		double tilesPerSide = 2 * GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH
 				/ tileSize;
 		return Math.log(tilesPerSide) / Math.log(2);
 	}
@@ -186,54 +186,18 @@ public class GridUtils {
 	 * @return point in unit
 	 */
 	public static Point toUnit(double longitude, double latitude, Unit unit) {
-		Point point = null;
+		mil.nga.sf.Point point = null;
 		switch (unit) {
 		case DEGREE:
-			point = toDegrees(longitude, latitude);
+			point = GeometryUtils.metersToDegrees(longitude, latitude);
 			break;
 		case METER:
-			point = toMeters(longitude, latitude);
+			point = GeometryUtils.degreesToMeters(longitude, latitude);
 			break;
 		default:
 			throw new IllegalArgumentException("Unsupported unit: " + unit);
 		}
-		return point;
-	}
-
-	/**
-	 * Convert a WGS84 coordinate to a point in meters
-	 * 
-	 * @param longitude
-	 *            WGS84 longitude
-	 * @param latitude
-	 *            WGS84 latitude
-	 * @return point in meters
-	 */
-	public static Point toMeters(double longitude, double latitude) {
-		double lon = longitude * GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH
-				/ 180;
-		double lat = Math.log(Math.tan((90 + latitude) * Math.PI / 360))
-				/ (Math.PI / 180);
-		lat = lat * GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH / 180;
-		return Point.meters(lon, lat);
-	}
-
-	/**
-	 * Convert a coordinate in meters to a WGS84 point
-	 * 
-	 * @param longitude
-	 *            longitude in meters
-	 * @param latitude
-	 *            latitude in meters
-	 * @return WGS84 coordinate
-	 */
-	public static Point toDegrees(double longitude, double latitude) {
-		double lon = longitude * 180
-				/ GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH;
-		double lat = latitude * 180
-				/ GridConstants.WEB_MERCATOR_HALF_WORLD_WIDTH;
-		lat = Math.atan(Math.exp(lat * (Math.PI / 180))) / Math.PI * 360 - 90;
-		return Point.degrees(lon, lat);
+		return Point.point(point, unit);
 	}
 
 	/**
