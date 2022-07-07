@@ -440,58 +440,40 @@ public class Bounds extends GeometryEnvelope {
 	}
 
 	/**
-	 * Get the center longitude
+	 * Get the centroid longitude
 	 * 
-	 * @return center longitude
+	 * @return centroid longitude
 	 */
-	public double getCenterLongitude() {
-		return (getWidth() / 2.0) + getMinLongitude();
+	public double getCentroidLongitude() {
+		return getMidX();
 	}
 
 	/**
-	 * Get the center latitude
+	 * Get the centroid latitude
 	 * 
-	 * @return center latitude
+	 * @return centroid latitude
 	 */
-	public double getCenterLatitude() {
-		return getCenter().getLatitude();
-	}
-
-	/**
-	 * Get the center coordinate
-	 * 
-	 * @return center coordinate
-	 */
-	public Point getCenter() {
-
-		double centerLongitude = getCenterLongitude();
-
-		Point northPoint = null;
-		Point southPoint = null;
-		switch (unit) {
-		case DEGREE:
-			northPoint = Point.degreesToMeters(centerLongitude,
-					getMaxLatitude());
-			southPoint = Point.degreesToMeters(centerLongitude,
-					getMinLatitude());
-			break;
-		case METER:
-			northPoint = Point.meters(centerLongitude, getMaxLatitude());
-			southPoint = Point.meters(centerLongitude, getMinLatitude());
-			break;
-		default:
-			throw new IllegalArgumentException("Unsupported unit: " + unit);
-		}
-
-		double centerX = northPoint.getLongitude();
-		double centerY = southPoint.getLatitude()
-				+ (0.5 * (northPoint.getLatitude() - southPoint.getLatitude()));
-
-		Point point = Point.meters(centerX, centerY);
+	public double getCentroidLatitude() {
+		double centerLatitude;
 		if (unit == Unit.DEGREE) {
-			point = point.toDegrees();
+			centerLatitude = getCentroid().getLatitude();
+		} else {
+			centerLatitude = getMidY();
 		}
+		return centerLatitude;
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Point getCentroid() {
+		Point point = null;
+		if (unit == Unit.DEGREE) {
+			point = toMeters().getCentroid().toDegrees();
+		} else {
+			point = Point.point(super.getCentroid(), unit);
+		}
 		return point;
 	}
 
