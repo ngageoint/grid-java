@@ -5,6 +5,7 @@ import mil.nga.grid.features.Line;
 import mil.nga.grid.features.Point;
 import mil.nga.grid.features.Unit;
 import mil.nga.grid.tile.Pixel;
+import mil.nga.sf.util.GeometryConstants;
 import mil.nga.sf.util.GeometryUtils;
 
 /**
@@ -100,13 +101,13 @@ public class GridUtils {
 		int tilesPerSide = tilesPerSide(zoom);
 		double tileSize = tileSize(tilesPerSide);
 
-		double minLon = (-1 * GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH)
+		double minLon = (-1 * GeometryConstants.WEB_MERCATOR_HALF_WORLD_WIDTH)
 				+ (x * tileSize);
-		double minLat = GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH
+		double minLat = GeometryConstants.WEB_MERCATOR_HALF_WORLD_WIDTH
 				- ((y + 1) * tileSize);
-		double maxLon = (-1 * GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH)
+		double maxLon = (-1 * GeometryConstants.WEB_MERCATOR_HALF_WORLD_WIDTH)
 				+ ((x + 1) * tileSize);
-		double maxLat = GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH
+		double maxLat = GeometryConstants.WEB_MERCATOR_HALF_WORLD_WIDTH
 				- (y * tileSize);
 
 		return Bounds.meters(minLon, minLat, maxLon, maxLat);
@@ -131,7 +132,8 @@ public class GridUtils {
 	 * @return tile size
 	 */
 	public static double tileSize(int tilesPerSide) {
-		return (2 * GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH) / tilesPerSide;
+		return (2 * GeometryConstants.WEB_MERCATOR_HALF_WORLD_WIDTH)
+				/ tilesPerSide;
 	}
 
 	/**
@@ -144,8 +146,8 @@ public class GridUtils {
 	public static double getZoomLevel(Bounds bounds) {
 		bounds = bounds.toMeters();
 		double tileSize = Math.min(bounds.getWidth(), bounds.getHeight());
-		double tilesPerSide = 2 * GeometryUtils.WEB_MERCATOR_HALF_WORLD_WIDTH
-				/ tileSize;
+		double tilesPerSide = 2
+				* GeometryConstants.WEB_MERCATOR_HALF_WORLD_WIDTH / tileSize;
 		return Math.log(tilesPerSide) / Math.log(2);
 	}
 

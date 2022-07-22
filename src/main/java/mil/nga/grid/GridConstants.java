@@ -1,5 +1,7 @@
 package mil.nga.grid;
 
+import mil.nga.sf.util.GeometryConstants;
+
 /**
  * Grid Constants
  *
@@ -10,22 +12,22 @@ public class GridConstants {
 	/**
 	 * Minimum longitude
 	 */
-	public static final double MIN_LON = -180.0;
+	public static final double MIN_LON = -GeometryConstants.WGS84_HALF_WORLD_LON_WIDTH;
 
 	/**
 	 * Maximum longitude
 	 */
-	public static final double MAX_LON = 180.0;
+	public static final double MAX_LON = GeometryConstants.WGS84_HALF_WORLD_LON_WIDTH;
 
 	/**
 	 * Minimum latitude
 	 */
-	public static final double MIN_LAT = -90.0;
+	public static final double MIN_LAT = -GeometryConstants.WGS84_HALF_WORLD_LAT_HEIGHT;
 
 	/**
 	 * Maximum latitude
 	 */
-	public static final double MAX_LAT = 90.0;
+	public static final double MAX_LAT = GeometryConstants.WGS84_HALF_WORLD_LAT_HEIGHT;
 
 	/**
 	 * Omitted band letter 'I'
