@@ -160,7 +160,7 @@ public class Line extends mil.nga.sf.Line {
 	 * 
 	 * @param unit
 	 *            unit
-	 * @return point in units, same point if equal units
+	 * @return line in units, same line if equal units
 	 */
 	public Line toUnit(Unit unit) {
 		Line line = null;
