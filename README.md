@@ -27,12 +27,12 @@ View the latest [Javadoc](http://ngageoint.github.io/grid-java/docs/api/)
 
 ### Installation ###
 
-Pull from the [Maven Central Repository](http://search.maven.org/#artifactdetails|mil.nga|grid|1.0.0|jar) (JAR, POM, Source, Javadoc)
+Pull from the [Maven Central Repository](http://search.maven.org/#artifactdetails|mil.nga|grid|1.1.0|jar) (JAR, POM, Source, Javadoc)
 
     <dependency>
         <groupId>mil.nga</groupId>
         <artifactId>grid</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </dependency>
 
 ### Build ###
