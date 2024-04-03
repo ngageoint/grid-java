@@ -4,7 +4,7 @@ Adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
-## 1.1.2 (TBD)
+## [1.1.2](https://github.com/ngageoint/grid-java/releases/tag/1.1.2) (04-03-2024)
 
 * simple-features-java version 2.2.2
 
